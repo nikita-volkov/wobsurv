@@ -1,0 +1,14 @@
+<html>
+<head>
+  <title>Index of {{path}}</title>
+</head>
+<body>
+  <h1>Index of <code>{{path}}</code></h1>
+  <ul>
+    {{#contents}}
+    <li><a href="{{path}}{{.}}">{{.}}</a></li>
+    {{/contents}}
+  </ul>
+{{>footer}}
+</body>
+</html>

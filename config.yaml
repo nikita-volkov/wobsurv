@@ -1,0 +1,32 @@
+logging:
+  true
+default-port:
+  53000
+content-dir:
+  www
+templates-dir:
+  templates
+connections-limit:
+  48
+mime-types:
+  avi:  video/avi
+  css:  text/css
+  gif:  image/gif
+  htm:  text/html
+  html: text/html
+  jpg:  image/jpeg
+  jpeg: image/jpeg
+  js:   application/javascript
+  mov:  video/quicktime
+  mp3:  audio/mpeg
+  mp4:  video/mp4
+  mpg:  video/mpeg
+  mpeg: video/mpeg
+  ogg:  audio/ogg
+  pdf:  application/pdf
+  png:  image/png
+  ps:   application/postscript
+  svg:  image/svg+xml
+  swf:  application/x-shockwave-flash
+  txt:  text/plain
+  xml:  application/xml
