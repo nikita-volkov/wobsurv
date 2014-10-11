@@ -48,7 +48,7 @@ settingsParser o =
       Wobsurv.Settings logging port connectionsLimit templatesDir contentDir mimeMappings
   where
     filePath = 
-      Aeson.withText "FilePath" $ pure . FilePath.decode
+      Aeson.withText "FilePath" $ pure . FilePath.fromText
     byteString =
       Aeson.withText "ByteString" $ pure . Text.Encoding.encodeUtf8
 
