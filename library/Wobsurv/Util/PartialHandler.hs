@@ -37,10 +37,10 @@ toTotal (PartialHandler h) =
 -- * Standard handlers
 -------------------------
 
-ignoreThreadKilled :: PartialHandler ()
-ignoreThreadKilled =
+onThreadKilled :: IO a -> PartialHandler a
+onThreadKilled io =
   typed $ \case
-    ThreadKilled -> Just (return ())
+    ThreadKilled -> Just io
     _ -> Nothing
 
 -- |

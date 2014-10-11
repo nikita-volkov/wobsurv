@@ -60,7 +60,7 @@ acquisitionLoop acquirer releaser handler =
   do
     exceptionHandler <- do
       threadId <- myThreadId
-      return $ Handler.toTotal $ Handler.ignoreThreadKilled <> Handler.rethrowTo threadId
+      return $ Handler.toTotal $ Handler.onThreadKilled (return ()) <> Handler.rethrowTo threadId
     forever $ do
       resource <- acquirer
       forkFinally (handler resource) $ \r -> do
