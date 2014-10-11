@@ -41,7 +41,9 @@ type Rejector =
 
 rejection :: Timeout -> Rejector -> Socket.Socket -> IO ()
 rejection timeout rejector socket =
-  handlingExceptions $ runSafeT $ runEffect $
+  handlingExceptions $ runSafeT $ runEffect $ do
+    -- Consume something to keep linux clients happy:
+    next $ PipesNetwork.fromSocketTimeout 500000 socket 512
     rejector >-> PipesNetwork.toSocketTimeout timeout socket
 
 
