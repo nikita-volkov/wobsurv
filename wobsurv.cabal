@@ -43,6 +43,8 @@ library
     Wobsurv.Util.HTTP.Parser
     Wobsurv.Util.HTTP.Renderer
     Wobsurv.Util.HTTP.URLEncoding
+    -- ** A bound thread hierarchies management
+    Wobsurv.Util.MasterThread
     -- ** A protocol-agnostic request-response server
     Wobsurv.Util.OpenServer.Connection
     Wobsurv.Util.OpenServer.ConnectionsManager
@@ -72,12 +74,14 @@ library
     -- parsing:
     attoparsec == 0.12.*,
     -- data:
+    stm-containers == 0.1.*,
     old-locale == 1.0.*,
     time == 1.4.*,
     text >= 1.1.1.3 && < 1.3,
     bytestring >= 0.10.4.0 && < 0.11,
     unordered-containers == 0.2.*,
     -- general:
+    monad-control == 0.3.*,
     transformers == 0.4.*,
     base-prelude >= 0.1.5 && < 0.2
   ghc-options:

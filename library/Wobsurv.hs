@@ -1,6 +1,7 @@
 module Wobsurv where
 
 import BasePrelude
+import Control.Monad.Trans.Class
 import Data.Text (Text)
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
@@ -8,6 +9,7 @@ import Filesystem.Path (FilePath)
 import qualified Wobsurv.Util.OpenServer.ConnectionsManager as OpenServer.ConnectionsManager
 import qualified Wobsurv.Util.OpenServer.Connection as OpenServer.Connection
 import qualified Wobsurv.Util.Mustache.Renderer as Mustache.Renderer
+import qualified Wobsurv.Util.MasterThread as MasterThread
 import qualified Wobsurv.Interaction
 import qualified Wobsurv.Response
 import qualified Wobsurv.Logging
@@ -37,7 +39,7 @@ serve settings =
         else return $ const $ return ()
     let
       allowedConnectionHandler =
-        OpenServer.Connection.session timeout interactor
+        lift . OpenServer.Connection.session timeout interactor
         where
           interactor =
             Wobsurv.Interaction.run Wobsurv.Interaction.interaction $
@@ -48,11 +50,11 @@ serve settings =
                 (Nothing)
                 (renderer)
       disallowedConnectionHandler =
-        OpenServer.Connection.rejection timeout rejector
+        lift . OpenServer.Connection.rejection timeout rejector
         where
           rejector =
             Wobsurv.Response.runInProducer Wobsurv.Response.serviceUnavailable renderer
-    OpenServer.ConnectionsManager.listen $
+    MasterThread.run $ OpenServer.ConnectionsManager.listen $
       OpenServer.ConnectionsManager.Settings 
         (port settings) 
         (connectionsLimit settings)
