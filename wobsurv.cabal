@@ -2,6 +2,20 @@ name:
   wobsurv
 version:
   0.1.0
+synopsis:
+  A simple and highly performant HTTP file server
+description:
+  Notable features:
+  .
+  * Based on streaming. Produces the response while the request is still coming. It doesn't waste resources on incorrect or malicious requests by dismissing them right away. It is very gentle with memory.
+  .
+  * Has a configurable limit of simultaneous connections. All exceeding requests get rejected with a "Service Unavailable" status with code 503.
+category:
+  Network, Networking, Service
+homepage:
+  https://github.com/nikita-volkov/wobsurv 
+bug-reports:
+  https://github.com/nikita-volkov/wobsurv/issues 
 author:
   Nikita Volkov <nikita.y.volkov@mail.ru>
 maintainer:

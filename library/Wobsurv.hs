@@ -19,17 +19,40 @@ import qualified Filesystem
 import qualified Filesystem.Path.CurrentOS as FilePath
 
 
+-- |
+-- Settings for running the server.
 data Settings =
   Settings {
+    -- |
+    -- Whether to log requests in the 'stdout'.
     logging :: Bool,
+    -- |
+    -- A port to listen on.
     port :: Word,
+    -- | 
+    -- A maximum amount of clients.
+    -- When this amount is reached the server rejects all the further connections 
+    -- with a "Service Unavailable" status.
     connectionsLimit :: Word,
+    -- |
+    -- A path to the directory containing template files for server responses.
     templatesDir :: FilePath,
+    -- |
+    -- A directory, the contents of which should be served.
     contentDir :: FilePath,
+    -- |
+    -- MIME content-type mappings.
     mimeMappings :: HashMap Text ByteString
   }
   deriving (Show)
 
+-- |
+-- Run the server with the provided settings.
+-- 
+-- This operation is blocking. 
+-- If you need to be able to stop the server run it in a separate thread,
+-- killing that thread will stop the server and 
+-- properly release all the resources acquired by the server.
 serve :: Settings -> IO ()
 serve settings =
   MasterThread.run $ do
