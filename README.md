@@ -5,8 +5,8 @@ Wobsurv
 A simple and highly performant HTTP file server.
 
 
-Noteable features:
-------------------
+Notable features:
+-----------------
 
 * Based on streaming. Produces the response while the request is still coming. It doesn't waste resources on incorrect or malicious requests by dismissing them right away. It is very gentle with memory.
 
