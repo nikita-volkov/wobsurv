@@ -1,7 +1,8 @@
 module Wobsurv.Util.MasterThread where
 
-import BasePrelude
+import BasePrelude hiding (forkFinally)
 import Control.Monad.Trans.Reader
+import qualified BasePrelude
 import qualified STMContainers.Set as Set
 import qualified Wobsurv.Util.PartialHandler as H
 
@@ -63,9 +64,15 @@ forkFinally main finalizer =
     atomically $ Set.insert slaveThread context
     return slaveThread
 
-    
+fork :: MT () -> MT ThreadId
+fork main =
+  forkFinally main (return ())
 
-
+-- | 
+-- Run the 'MasterThread' monad, which performs no subforking.
+runWithoutForking :: MT a -> IO a
+runWithoutForking mt =
+  runReaderT mt (error "Attempt to fork when run with 'runWithoutForking'")
 
 
 

@@ -102,7 +102,7 @@ runTest env test =
         serverThread <- 
           forkIO $ Wobsurv.serve $ 
             Wobsurv.Settings
-              (False)
+              (True)
               (envPort env) 
               (envConnectionsLimit env) 
               ("templates")

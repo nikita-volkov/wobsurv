@@ -52,6 +52,9 @@ library
     Wobsurv.Util.PartialHandler
     -- ** Integration of "attoparsec" with "pipes"
     Wobsurv.Util.PipesAttoparsec
+    -- ** A task performer thread, 
+    -- which allows to execute sequential tasks in a non-blocking way.
+    Wobsurv.Util.WorkerThread
   exposed-modules:
     Wobsurv
   build-depends:
@@ -81,6 +84,7 @@ library
     bytestring >= 0.10.4.0 && < 0.11,
     unordered-containers == 0.2.*,
     -- general:
+    stm == 2.4.*,
     monad-control == 0.3.*,
     transformers == 0.4.*,
     base-prelude >= 0.1.5 && < 0.2

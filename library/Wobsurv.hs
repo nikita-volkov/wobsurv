@@ -10,6 +10,7 @@ import qualified Wobsurv.Util.OpenServer.ConnectionsManager as OpenServer.Connec
 import qualified Wobsurv.Util.OpenServer.Connection as OpenServer.Connection
 import qualified Wobsurv.Util.Mustache.Renderer as Mustache.Renderer
 import qualified Wobsurv.Util.MasterThread as MasterThread
+import qualified Wobsurv.Util.WorkerThread as WorkerThread
 import qualified Wobsurv.Interaction
 import qualified Wobsurv.Response
 import qualified Wobsurv.Logging
@@ -31,13 +32,17 @@ data Settings =
 
 serve :: Settings -> IO ()
 serve settings =
-  do
-    renderer <- Mustache.Renderer.new (templatesDir settings)
-    logger <- 
-      if logging settings
-        then Wobsurv.Logging.newSynchronizedLogger
-        else return $ const $ return ()
+  MasterThread.run $ do
+    renderer <- lift $ Mustache.Renderer.new (templatesDir settings)
+    printerThread <- WorkerThread.new 1000
     let
+      logger =
+        if logging settings
+          then 
+            \m -> MasterThread.runWithoutForking $ 
+              WorkerThread.schedule (lift $ Wobsurv.Logging.log m) printerThread
+          else 
+            const $ return ()
       allowedConnectionHandler =
         lift . OpenServer.Connection.session timeout interactor
         where
@@ -54,7 +59,7 @@ serve settings =
         where
           rejector =
             Wobsurv.Response.runInProducer Wobsurv.Response.serviceUnavailable renderer
-    MasterThread.run $ OpenServer.ConnectionsManager.listen $
+    OpenServer.ConnectionsManager.listen $
       OpenServer.ConnectionsManager.Settings 
         (port settings) 
         (connectionsLimit settings)
